@@ -59,14 +59,13 @@
       </div>
       <section class="items" id="items">
         <!-- ecrire scrip de recherche du produit  -->
-        <!-- <a href="./product.html?id=42">
+        <a href="./product.html?id=${article._id}">
           <article>
-            <img src=".../product01.jpg" alt="Lorem ipsum dolor sit amet, Kanap name1">
-            <h3 class="productName">Kanap name1</h3>
-            <p class="productDescription">Dis enim malesuada risus sapien gravida nulla nisl arcu. Dis enim malesuada
-              risus sapien gravida nulla nisl arcu.</p>
+            <img src="${article.imageUrl}" alt="${article.altTxt}">
+            <h3 class="productName">${article.name}</h3>
+            <p class="productDescription">${article.description}</p>
           </article>
-        </a> -->
+        </a>
       </section>
     </div>
   </main>
