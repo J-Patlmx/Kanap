@@ -1,4 +1,4 @@
-let item = 0; //declaration de variable et initialisation de la valeur
+// let item = 0; //declaration de variable et initialisation de la valeur
 
 // debut de la fonction quand le DOM est pret
 const start = () => {
@@ -6,19 +6,20 @@ const start = () => {
         .then((res) => res.json())//des promesses
         .then((data) => {//toujours des promesses
             sessionStorage.setItem("productData", JSON.stringify(data))
-            const articleData = JSON.parse(sessionStorage.getItem("productData"))
-            for (let _element of articleData) {
-                document.getElementById('items') // recuperation de mon element par son id
-                    .insertAdjacentHTML('beforeend',//insertion juste à l'intérieur de l'element
-                        `<a href="./product.html?${articleData[item]._id}">
+            // const articleData = JSON.parse(sessionStorage.getItem("productData"))
+            const galery = document.getElementById('items')
+            for (let _element of data) {
+                // document.getElementById('items') // recuperation de mon element par son id
+                galery.insertAdjacentHTML('beforeend',//insertion juste à l'intérieur de l'element
+                    `<a href="./product.html?=${_element._id}">
                             <article>
-                                <img src="${articleData[item].imageUrl}" 
-                                alt="${articleData[item].altTxt}">
-                                <h3 class="productName">${articleData[item].name}</h3>
-                                <p class="productDescription">${articleData[item].description}</p>
+                                <img src="${_element.imageUrl}" 
+                                alt="${_element.altTxt}">
+                                <h3 class="productName">${_element.name}</h3>
+                                <p class="productDescription">${_element.description}</p>
                             </article>
                         </a>`)
-                item++ //incrementation
+                // item++ //incrementation
             }
         })
 }

@@ -5,14 +5,16 @@ const articleData = JSON.parse(sessionStorage.getItem("productData"))
 let item = 0
 let str = window.location.href
 let url = new URL(str)
-let id = url.searchParams.toString()
+// let id = url.searchParams.toString()
+const id = url.searchParams.get("id"); //<-
+console.log('id');
 
-// recherche du tableau en fonction de l'id de l'article via une boucle 
-while (id != (articleData[item]._id + '=')) {
+// recherche du tableau en fonction de l'id de l'article via une boucle
+while (id != (articleData[item]._id)) {
     item++;
     var pageID = item;//la porte de la variable est uniquement dispo dans ma boucle
 };
-
+// changer la source de l'api
 // ajout des elements html
 document.querySelector('.item__img')
     .insertAdjacentHTML('afterbegin', `<img src="${articleData[item].imageUrl}" alt="${articleData[item].altTxt}"></img>`)
@@ -23,24 +25,23 @@ document.getElementById('price')
 document.getElementById('description')
     .insertAdjacentHTML('afterbegin', `${articleData[item].description}`)
 
-// boucle permettant dafficher le choix des couleurs    
+// boucle permettant dafficher le choix des couleurs
 let colorsChoice = 0
 for (let _color of articleData[item].colors) {
     document.getElementById('colors')
         .insertAdjacentHTML('afterbegin', `<option value=${articleData[item].colors[colorsChoice]}>${articleData[item].colors[colorsChoice]}</option>`);
-    colorsChoice++
+    // colorsChoice++
 }
-
 
 
 document.getElementById("addToCart").addEventListener("click", addToCart)
 
-function addToCart() {
-    // document.getElementById("").innerHTML = alert("ne lache pas meme si ça t'enerve")
+// function addToCart() {
+//     // document.getElementById("").innerHTML = alert("ne lache pas meme si ça t'enerve")
 
-}
+// }
 
 
-function isValid(value) {
-    console.log('testici')
-}
+// function isValid(value) {
+//     console.log('testici')
+// }
