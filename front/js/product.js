@@ -17,8 +17,7 @@ while (id != (articleData[item].id)) {
 // changer la source de l'api
 // ajout des elements html
 document.querySelector('.item__img')
-    .insertAdjacentHTML('afterbegin', `<img src="${_element.imageUrl}" 
-    alt="${_element.altTxt}">`)
+    .insertAdjacentHTML('afterbegin', `<img src="${articleData[item].imageUrl}" alt="${articleData[item].altTxt}"></img>`)
 document.getElementById('title')
     .insertAdjacentHTML('afterbegin', `${articleData[item].name}`)
 document.getElementById('price')
