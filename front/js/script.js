@@ -8,18 +8,18 @@ const start = () => {
             sessionStorage.setItem("productData", JSON.stringify(data))
             // const articleData = JSON.parse(sessionStorage.getItem("productData"))
             const galery = document.getElementById('items')
-            for (let _element of data) {
+            for (let element of data) {
                 // document.getElementById('items') // recuperation de mon element par son id
                 galery.insertAdjacentHTML('beforeend',//insertion juste à l'intérieur de l'element
-                    `<a href="./product.html?=${_element._id}">
+                    `<a href="./product.html?id=${element._id}">
                             <article>
-                                <img src="${_element.imageUrl}" 
-                                alt="${_element.altTxt}">
-                                <h3 class="productName">${_element.name}</h3>
-                                <p class="productDescription">${_element.description}</p>
+                                <img src="${element.imageUrl}" 
+                                alt="${element.altTxt}">
+                                <h3 class="productName">${element.name}</h3>
+                                <p class="productDescription">${element.description}</p>
                             </article>
                         </a>`)
-                // item++ //incrementation
+                //item++ //incrementation
             }
         })
 }
