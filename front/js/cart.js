@@ -18,7 +18,7 @@ fin de la boucle
 let panier = localStorage.getItem('panier') ? JSON.parse(localStorage.getItem('panier')) : [];
 let cart__items = document.getElementById("cart__items");
 
-let prixPanier = 0;// initialisation du total panier a 0
+let panierTotalPrice = 0;// initialisation du total panier a 0
 let addIdPanier = [];// recuperation id du produit
 
 //Fonction pour recuperer les donnees du produit via l'api
@@ -31,15 +31,6 @@ function GetProduct(Currentid) {
             })
     );
 }
-
-function priceTotalPanier(price, quantity) {
-    panierTotalPrice += quantity * price;
-    //affiche prix total du panier
-    let totalPrice = document.getElementById('totalPrice').textContent = panierTotalPrice;
-    // envoie au local storage
-    localStorage.setItem('totalPrice', JSON.stringify(totalPrice));
-}
-
 //Boucle sur le panier
 panier.forEach((Kanap, i) => {
     GetProduct(Kanap._id).then(Apikanap => {
@@ -57,7 +48,8 @@ panier.forEach((Kanap, i) => {
                             <div class="cart__item__content__settings">
                             <div class="cart__item__content__settings__quantity">
                                 <p>Qté :</p>
-                                <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${Kanap.quantity}">
+                                <input type="number" data-id"${i} "class="itemQuantity" name="itemQuantity" min="1" max="100" value="${Kanap.quantity}">
+                                <p>&nbsp; = Total : ${Apikanap.price * Kanap.quantity} €</p>
                             </div>
                             <div class="cart__item__content__settings__delete">
                                 <p class="deleteItem">Supprimer</p>
@@ -66,40 +58,59 @@ panier.forEach((Kanap, i) => {
                         </div>
                         </article>
                         `
+        // appl function total price
+        priceTotalPanier(Apikanap.price, Kanap.quantity);
+        //ajout de l'id produit 
+        addIdPanier.push(Kanap._id)
+
+
+        //ajout de l event supprimer sur les boutton
+        document.querySelectorAll(".deleteItem").forEach(deleteBtn => {
+            deleteBtn.addEventListener("click", () => deleteKanap(deleteBtn.closest('.cart__item').dataset.id))
+        });
+
+        //ajout de l event d'update de la quantitees
+        document.querySelectorAll(".itemQuantity").forEach(modifiedBtn =>
+            modifiedBtn.addEventListener('change', () => updateKanap(modifiedBtn.closest('.cart__item').dataset.id, modifiedBtn.value)))
     })
+})
 
-});
+// function de d'update 
+function updateKanap() {
+
+    /*je doit
+    -1 recuperer l'emplacement du produit dont je doit update la quantitee
+    -2 recuperer la quantitee de ce produit
+    -3 incrementer ou decrementer la quantitee 
+    -4 ecouter la nouvelle quantite
+        -4,1 verifier que la nouvel quantitee >=1 sinon run deleteKanap ?
+        -4,101 si quantity < 1 proposer la suppresion du produit ?
+    -5 push l'updateKanap dans le local storage
+    */
+}
 
 
-// appl function total price
-// priceTotalPanier(Apikanap.price, Kanap.quantity);
-// addIdPanier.push(Kanap._id);
 
 //fonction Supprimer
-// document.querySelectorAll(".deleteItem").forEach(delBtn => {
-//     delBtn.addEventListener("click", () => deletecanap(delBtn.closest('.cart__item').dataset.id))
-// });
+function deleteKanap(id) {
+    panier.forEach((Kanap, i) => {
+        if (Kanap._id === id) {
+            panier.splice(i, 1);
+            localStorage.setItem('panier', JSON.stringify(panier));
+            location.reload();
+        }
+    })
+}
 
-// function deletecanap(id) {
-//     panier.forEach((Kanap, i) => {
-//         if (Kanap._id === id) {
-//             panier.splice(i, 1);
-//             localStorage.setItem('panier', JSON.stringify(panier));
-//             window.location.reload();
-//         }
-//     })
-// }
+//TOTAL PANIER
+function priceTotalPanier(price, quantity) {
+    panierTotalPrice += quantity * price;
+    //affiche prix total du panier
+    let totalPrice = document.getElementById('totalPrice').textContent = panierTotalPrice;
+    // envoie au local storage
+    localStorage.setItem('totalPrice', JSON.stringify(totalPrice));
 
-    //;
-
-
-// if (panier == localStorage) {
-//         alert('bad bad ');
-// } else {
-//         alert('gogogogogogogog');
-// }
-
-
+}
 
 // const order = () => {
 
@@ -116,4 +127,5 @@ panier.forEach((Kanap, i) => {
 
 
 // document.getElementById("order").addEventListener("click", order);
+// window.location('index.html')
 
