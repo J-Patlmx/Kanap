@@ -14,11 +14,16 @@
 fin de la boucle 
 //traitement formaulaire  pour lenvoie d el acommande
 */
+
+
 //recupere mon panier memorise
 let panier = localStorage.getItem('panier') ? JSON.parse(localStorage.getItem('panier')) : [];
 let cart__items = document.getElementById("cart__items");
 
+
 let panierTotalPrice = 0;// initialisation du total panier a 0
+let panierTotalQuantity = 0;// initialisation du total panier a 0
+
 let addIdPanier = [];// recuperation id du produit
 
 //Fonction pour recuperer les donnees du produit via l'api
@@ -31,101 +36,133 @@ function GetProduct(Currentid) {
             })
     );
 }
-//Boucle sur le panier
-panier.forEach((Kanap, i) => {
-    GetProduct(Kanap._id).then(Apikanap => {
-        cart__items.innerHTML += `
-        <article class="cart__item" data-id="${Kanap._id}" data-color="${Kanap.color}">
-                        <div class="cart__item__img">
-                            <img src="${Apikanap.imageUrl}" alt="${Apikanap.altTxt}">
-                        </div>
-                        <div class="cart__item__content">
-                            <div class="cart__item__content__description">
-                            <h2>${Apikanap.name}</h2>
-                            <p>Couleur : ${Kanap.color}</p>
-                            <p>Prix : ${Apikanap.price} €</p>
-                            </div>
-                            <div class="cart__item__content__settings">
-                            <div class="cart__item__content__settings__quantity">
-                                <p>Qté :</p>
-                                <input type="number" data-id"${i} "class="itemQuantity" name="itemQuantity" min="1" max="100" value="${Kanap.quantity}">
-                                <p>&nbsp; = Total : ${Apikanap.price * Kanap.quantity} €</p>
-                            </div>
-                            <div class="cart__item__content__settings__delete">
-                                <p class="deleteItem">Supprimer</p>
-                            </div>
-                            </div>
-                        </div>
-                        </article>
-                        `
-        // appl function total price
-        priceTotalPanier(Apikanap.price, Kanap.quantity);
-        //ajout de l'id produit 
-        addIdPanier.push(Kanap._id)
 
+const reloadPanier = () => {
+    cart__items.innerHTML = "";
+    //Boucle sur le panier
+    panier.forEach((Kanap, i) => {
+        GetProduct(Kanap._id).then(Apikanap => {
+            cart__items.innerHTML += `
+            <article class="cart__item" data-id="${Kanap._id}" data-color="${Kanap.color}">
+                            <div class="cart__item__img">
+                                <img src="${Apikanap.imageUrl}" alt="${Apikanap.altTxt}">
+                            </div>
+                            <div class="cart__item__content">
+                                <div class="cart__item__content__description">
+                                <h2>${Apikanap.name}</h2>
+                                <p>Couleur : ${Kanap.color}</p>
+                                <p>Prix : ${Apikanap.price} €</p>
+                                </div>
+                                <div class="cart__item__content__settings">
+                                <div class="cart__item__content__settings__quantity">
+                                    <p>Qté :</p>
+                                    <input type="number" data-id="${i}" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${Kanap.quantity}">
+                                    <p>&nbsp; = Total : ${Apikanap.price * Kanap.quantity} €</p>
+                                </div>
+                                <div class="cart__item__content__settings__delete">
+                                    <p class="deleteItem">Supprimer</p>
+                                </div>
+                                </div>
+                            </div>
+                            </article>
+                            `
+            // appl function total price
+            priceTotalPanier(Apikanap.price, Kanap.quantity);
+            //ajout de l'id produit 
+            addIdPanier.push(Kanap._id)
 
-        //ajout de l event supprimer sur les boutton
-        document.querySelectorAll(".deleteItem").forEach(deleteBtn => {
-            deleteBtn.addEventListener("click", () => deleteKanap(deleteBtn.closest('.cart__item').dataset.id))
-        });
+            //ajout de l event supprimer sur les boutton
+            document.querySelectorAll(".deleteItem").forEach(deleteBtn => {
+                deleteBtn.addEventListener("click", () => deleteKanap(i))
+            });
 
-        //ajout de l event d'update de la quantitees
-        document.querySelectorAll(".itemQuantity").forEach(modifiedBtn =>
-            modifiedBtn.addEventListener('change', () => updateKanap(modifiedBtn.closest('.cart__item').dataset.id, modifiedBtn.value)))
+            //ajout de l event d'update de la quantitées
+            document.querySelectorAll(".itemQuantity").forEach(modifiedBtn =>
+                modifiedBtn.addEventListener('change', () => updateKanap(i, modifiedBtn.value)))
+        })
     })
-})
 
-// function de d'update 
-function updateKanap() {
-
-    /*je doit
-    -1 recuperer l'emplacement du produit dont je doit update la quantitee
-    -2 recuperer la quantitee de ce produit
-    -3 incrementer ou decrementer la quantitee 
-    -4 ecouter la nouvelle quantite
-        -4,1 verifier que la nouvel quantitee >=1 sinon run deleteKanap ?
-        -4,101 si quantity < 1 proposer la suppresion du produit ?
-    -5 push l'updateKanap dans le local storage
-    */
 }
 
 
+reloadPanier();
 
-//fonction Supprimer
-function deleteKanap(id) {
-    panier.forEach((Kanap, i) => {
-        if (Kanap._id === id) {
-            panier.splice(i, 1);
+
+
+//FONCTION SUPPRIMER
+function deleteKanap(p) {
+    if (confirm("Êtes-vous sur de vouloirs supprimés cet article ? C'est définitif !")) {
+        panier.forEach((_kanap, i) => {
+            if (i === p) {
+                panier.splice(i, 1);
+                localStorage.setItem('panier', JSON.stringify(panier));
+                location.reload();
+            }
+        })
+    }
+}
+
+//FONCTION MODIFICATION QUANTITÉES
+function updateKanap(p, value) {
+
+    if (value < 1 || value > 100) {
+        alert("Veuillez sélectionner une quantité entre 1 et 100 s'il vous plaît.")
+    }
+    panier.forEach((i) => {
+        if (i === p) {
+            panier[i].quantity = value;
             localStorage.setItem('panier', JSON.stringify(panier));
-            location.reload();
+            reloadPanier(); //<-- remplace le location.reload() 
+            // location.reload(); //<- me permet de mettre a jour mon panier dans le local storage
         }
     })
 }
 
-//TOTAL PANIER
+//FONCTION TOTAL PANIER ET TOTAL QUANTITÉS
 function priceTotalPanier(price, quantity) {
     panierTotalPrice += quantity * price;
+    panierTotalQuantity += quantity;
+
     //affiche prix total du panier
     let totalPrice = document.getElementById('totalPrice').textContent = panierTotalPrice;
+    let totalQuantity = document.getElementById('totalQuantity').textContent = panierTotalQuantity;
+
     // envoie au local storage
     localStorage.setItem('totalPrice', JSON.stringify(totalPrice));
+    localStorage.setItem('totalQuantity', JSON.stringify(totalQuantity));
 
 }
 
-// const order = () => {
-
-// ici je doit cree toute les conditions et verification pour permette la validation de mon achat
-//si le panier et different de vide et que tout les inputs sont rempli correctement alors je peux passer mon ordre de commande
-//sinon ("merci de choisir un canape location.replace('index.html')
-//sinon ("merci de verifier l'imput ('')
-
-// }
-//localStorage.removeItem('panier')// pour supprimer un kanap
-// addLocalStorage(panier);
-// localStorage.setItem('panier', JSON.stringify(panier));
-// location.replace("index.html");
 
 
-// document.getElementById("order").addEventListener("click", order);
+
+// let validForm = document.getElementById('cart__order__form');
+
+
+
+/*
+function verifForm() {
+
+    if (($("#firstname").val() == "") && ($("#lastname").val() !== "")) {
+        //on affiche un message pour demander à remplir le prenom
+        alert("Veuillez remplir votre prénom !");
+
+        //si le champs nom est vide et le champs prenom est rempli
+    } else if (($("#lastname").val() == "") && ($("#firstname").val() !== "")) {
+        //on affiche un message pour demander à remplir le prenom
+        alert("Veuillez remplir votre nom !");
+
+        //si les deux champs sont vides
+    } else if (($("#lastname").val() == "") && ($("#firstname").val() == "")) {
+        //on affiche un message pour demander à remplir les champs requis
+        alert("Veuillez remplir les champs requis !");
+
+
+    }
+
+}*/
+
+
+// document.getElementById("order").addEventListener("click", verifForm);
 // window.location('index.html')
 
