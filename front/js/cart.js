@@ -37,6 +37,7 @@ function GetProduct(Currentid) {
                 return product
             })
     );
+
 }
 
 const reloadPanier = () => {
@@ -141,9 +142,9 @@ function priceTotalPanier(price, quantity) {
 
 
 let form = document.querySelector(".cart__order__form");
-
 // Ecouteur d'événement "submit" pour le formulaire de commande
 form.addEventListener("submit", function (event) {
+
     // Empêche la soumission automatique du formulaire
     event.preventDefault();
     // Récupère la valeur saisie pour chaque champ
@@ -207,9 +208,29 @@ form.addEventListener("submit", function (event) {
     }
 
     if (isValid) {
-        form.submit();
+        // form.submit();
+        // Récupère le bouton "Commander !"
+        const orderBtn = document.getElementById("order");
+        orderBtn.addEventListener("click", function () {
+            // Redirige vers la page de confirmation
+            Location.href = "confirmation.html";
+        });
     }
 });
+
+/*
+// Récupère le bouton "Commander !"
+const orderBtn = document.getElementById("order");
+
+// Ajoute un événement au clic sur le bouton
+orderBtn.addEventListener("click", function () {
+    // Redirige vers la page de confirmation
+    Location.href = "confirmation.html";
+});
+*/
+
+
+
 
 
 

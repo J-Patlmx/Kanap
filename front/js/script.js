@@ -1,4 +1,3 @@
-// let item = 0; //declaration de variable et initialisation de la valeur
 
 // debut de la fonction quand le DOM est pret
 const start = () => {
@@ -19,7 +18,6 @@ const start = () => {
                                 <p class="productDescription">${element.description}</p>
                             </article>
                         </a>`)
-                //item++ //incrementation
             }
         })
 }
