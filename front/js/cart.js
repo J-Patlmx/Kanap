@@ -14,20 +14,22 @@
 fin de la boucle 
 //traitement formaulaire  pour lenvoie d el acommande
 */
+//_-------------------------------------------------------------------------------------------------------------
 
-
-//recupere mon panier memorise
+// Initialisation de la variable panier à partir de Local storage
+// s'il n'existe pas de panier dans le local storage on initialise un tableau vide
 let panier = localStorage.getItem('panier') ? JSON.parse(localStorage.getItem('panier')) : [];
-let cart__items = document.getElementById("cart__items");
 
+// récupération de la div dans laquelle on va ajouter les articles du panier
+let cart__items = document.getElementById("cart__items");
 
 let panierTotalPrice = 0;// initialisation du total panier a 0
 let panierTotalQuantity = 0;// initialisation du total panier a 0
-
 let addIdPanier = [];// recuperation id du produit
 
 //Fonction pour recuperer les donnees du produit via l'api
 function GetProduct(Currentid) {
+    //utilisation de promise pour gérer les async requests
     return Promise.resolve(
         fetch("http://localhost:3000/api/products/" + Currentid)// recuperation de l'api et stockage dans localStorage
             .then(response => response.json())
@@ -38,10 +40,12 @@ function GetProduct(Currentid) {
 }
 
 const reloadPanier = () => {
+    // On vide la div pour eviter de rajouter des éléments en doublon
     cart__items.innerHTML = "";
     //Boucle sur le panier
     panier.forEach((Kanap, i) => {
         GetProduct(Kanap._id).then(Apikanap => {
+            // template avec les infos produits récupérées via l'API
             cart__items.innerHTML += `
             <article class="cart__item" data-id="${Kanap._id}" data-color="${Kanap.color}">
                             <div class="cart__item__img">
@@ -136,33 +140,78 @@ function priceTotalPanier(price, quantity) {
 
 
 
-// let validForm = document.getElementById('cart__order__form');
+let form = document.querySelector(".cart__order__form");
 
+// Ecouteur d'événement "submit" pour le formulaire de commande
+form.addEventListener("submit", function (event) {
+    // Empêche la soumission automatique du formulaire
+    event.preventDefault();
+    // Récupère la valeur saisie pour chaque champ
+    let firstName = document.querySelector("#firstName").value;
+    let lastName = document.querySelector("#lastName").value;
+    let address = document.querySelector("#address").value;
+    let city = document.querySelector("#city").value;
+    let email = document.querySelector("#email").value;
 
+    // Récupère les éléments de message d'erreur correspondants à chaque champ
+    let firstNameError = document.querySelector("#firstNameErrorMsg");
+    let lastNameError = document.querySelector("#lastNameErrorMsg");
+    let addressError = document.querySelector("#addressErrorMsg");
+    let cityError = document.querySelector("#cityErrorMsg");
+    let emailError = document.querySelector("#emailErrorMsg");
 
-/*
-function verifForm() {
+    let isValid = true;
 
-    if (($("#firstname").val() == "") && ($("#lastname").val() !== "")) {
-        //on affiche un message pour demander à remplir le prenom
-        alert("Veuillez remplir votre prénom !");
-
-        //si le champs nom est vide et le champs prenom est rempli
-    } else if (($("#lastname").val() == "") && ($("#firstname").val() !== "")) {
-        //on affiche un message pour demander à remplir le prenom
-        alert("Veuillez remplir votre nom !");
-
-        //si les deux champs sont vides
-    } else if (($("#lastname").val() == "") && ($("#firstname").val() == "")) {
-        //on affiche un message pour demander à remplir les champs requis
-        alert("Veuillez remplir les champs requis !");
-
-
+    // Validation du champ "Prénom"
+    if (!/^[a-zA-Z]+$/.test(firstName)) {
+        firstNameError.textContent = "Entrer un prénom valide";
+        isValid = false;
+    } else {
+        firstNameError.textContent = "";
     }
 
-}*/
+    // Validation du champ "Nom"
+
+    if (!/^[a-zA-Z]+$/.test(lastName)) {
+        lastNameError.textContent = "Entrer un nom valide";
+        isValid = false;
+    } else {
+        lastNameError.textContent = "";
+    }
+
+    // Validation du champ "Adresse"
+
+    if (!/^[a-zA-Z0-9\s,'-]*$/.test(address)) {
+        addressError.textContent = "Entrer une adresse valide";
+        isValid = false;
+    } else {
+        addressError.textContent = "";
+    }
+
+    // Validation du champ "Ville"
+
+    if (!/^[a-zA-Z]+$/.test(city)) {
+        cityError.textContent = "Entrer une ville valide";
+        isValid = false;
+    } else {
+        cityError.textContent = "";
+    }
+
+    // Validation du champ "Email"
+
+    if (!/^\S+@\S+\.\S+$/.test(email)) {
+        emailError.textContent = "Entrer un email valide";
+        isValid = false;
+    } else {
+        emailError.textContent = "";
+    }
+
+    if (isValid) {
+        form.submit();
+    }
+});
 
 
-// document.getElementById("order").addEventListener("click", verifForm);
-// window.location('index.html')
+
+
 
