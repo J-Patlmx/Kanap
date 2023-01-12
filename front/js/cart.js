@@ -1,20 +1,3 @@
-/*
-//LOGIQUE
-   recuperer panier Local storage
-    boucle sur le panier (_id)
-        completr les info pour chaque produit du panier 
-        a partir du back via fetch("http:  localhost://3000/api/products/" + idProduct) 
-        
-        afficher notre produit selon template article
-    // fonction calcul prix du total panier 
-        debut boucle  var total =0
-        //actions lier a des click 
-                removeItem +ecrasement panier +reload LS
-                update item +ecrasement panier +reload Ls
-fin de la boucle 
-//traitement formaulaire  pour lenvoie d el acommande
-*/
-//_-------------------------------------------------------------------------------------------------------------
 
 // Initialisation de la variable panier à partir de Local storage
 // s'il n'existe pas de panier dans le local storage on initialise un tableau vide
@@ -41,6 +24,8 @@ function GetProduct(Currentid) {
 }
 
 const reloadPanier = () => {
+    panierTotalPrice = 0;// initialisation du total panier a 0
+    panierTotalQuantity = 0;
     // On vide la div pour eviter de rajouter des éléments en doublon
     cart__items.innerHTML = "";
     //Boucle sur le panier
@@ -71,7 +56,7 @@ const reloadPanier = () => {
                             </div>
                             </article>
                             `
-            // appl function total price
+            // appel function total price
             priceTotalPanier(Apikanap.price, Kanap.quantity);
             //ajout de l'id produit 
             addIdPanier.push(Kanap._id)
@@ -89,10 +74,7 @@ const reloadPanier = () => {
 
 }
 
-
 reloadPanier();
-
-
 
 //FONCTION SUPPRIMER
 function deleteKanap(p) {
@@ -113,10 +95,11 @@ function updateKanap(p, value) {
     if (value < 1 || value > 100) {
         alert("Veuillez sélectionner une quantité entre 1 et 100 s'il vous plaît.")
     }
-    panier.forEach((i) => {
+    panier.forEach((kanap, i) => {
         if (i === p) {
-            panier[i].quantity = value;
+            kanap.quantity = value;
             localStorage.setItem('panier', JSON.stringify(panier));
+
             reloadPanier(); //<-- remplace le location.reload() 
             // location.reload(); //<- me permet de mettre a jour mon panier dans le local storage
         }
@@ -126,7 +109,7 @@ function updateKanap(p, value) {
 //FONCTION TOTAL PANIER ET TOTAL QUANTITÉS
 function priceTotalPanier(price, quantity) {
     panierTotalPrice += quantity * price;
-    panierTotalQuantity += quantity;
+    panierTotalQuantity += parseInt(quantity);
 
     //affiche prix total du panier
     let totalPrice = document.getElementById('totalPrice').textContent = panierTotalPrice;
@@ -137,7 +120,6 @@ function priceTotalPanier(price, quantity) {
     localStorage.setItem('totalQuantity', JSON.stringify(totalQuantity));
 
 }
-
 
 
 
@@ -208,30 +190,22 @@ form.addEventListener("submit", function (event) {
     }
 
     if (isValid) {
-        form.submit();
-        window.location("confirmation.html");
+
+
+
         /*
-        // Récupère le bouton "Commander !"
-        const orderBtn = document.getElementById("order");
-        orderBtn.addEventListener("click", function () {
-            // Redirige vers la page de confirmation
-            Location.href = "confirmation.html";
-        });*/
-        // document.getElementById("order").addEventListener("click", location.replace("confirmation.html"));
+        1- creer notre objet contact
+        
+        
+        */
+
+
+        location.href = "./confirmation.html";
 
     }
 });
 
-/*
-// Récupère le bouton "Commander !"
-const orderBtn = document.getElementById("order");
 
-// Ajoute un événement au clic sur le bouton
-orderBtn.addEventListener("click", function () {
-    // Redirige vers la page de confirmation
-    Location.href = "confirmation.html";
-});
-*/
 
 
 
