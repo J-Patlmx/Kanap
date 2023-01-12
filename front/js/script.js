@@ -5,10 +5,10 @@ const start = () => {
         .then((res) => res.json())//des promesses
         .then((data) => {//toujours des promesses
             localStorage.setItem("productData", JSON.stringify(data))
-            // const articleData = JSON.parse(sessionStorage.getItem("productData"))
+
             const galery = document.getElementById('items')
             for (let element of data) {
-                // document.getElementById('items') // recuperation de mon element par son id
+
                 galery.insertAdjacentHTML('beforeend',//insertion juste à l'intérieur de l'element
                     `<a href="./product.html?id=${element._id}">
                             <article>

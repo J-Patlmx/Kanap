@@ -208,13 +208,17 @@ form.addEventListener("submit", function (event) {
     }
 
     if (isValid) {
-        // form.submit();
+        form.submit();
+        window.location("confirmation.html");
+        /*
         // Récupère le bouton "Commander !"
         const orderBtn = document.getElementById("order");
         orderBtn.addEventListener("click", function () {
             // Redirige vers la page de confirmation
             Location.href = "confirmation.html";
-        });
+        });*/
+        // document.getElementById("order").addEventListener("click", location.replace("confirmation.html"));
+
     }
 });
 

@@ -48,7 +48,6 @@ const addToCart = () => {
 
     } else {
 
-
         let newPurchase = {
             "_id": idProduct,
             "quantity": quantity,
