@@ -191,16 +191,44 @@ form.addEventListener("submit", function (event) {
 
     if (isValid) {
 
+        const contact = {
+            'firstName': firstName,
+            'lastName': lastName,
+            'address': address,
+            'city': city,
+            'email': email
+        };
+        let products = [];
+        panier.forEach((kanap) => {
+            products.push(kanap._id)
+        })
 
+        let FormCommande = JSON.stringify({
+            contact,
+            products,
+        })
 
-        /*
-        1- creer notre objet contact
-        
-        
-        */
-
-
-        location.href = "./confirmation.html";
+        // APEL API AVEC FETCH // ENVOIE DES DONNEES AVEC POST
+        fetch('http://localhost:3000/api/products/order', {
+            method: 'POST',
+            headers: {
+                'content-type': "application/json"
+            },
+            mode: "cors",
+            body: FormCommande
+        })
+            .then(function (response) {
+                return response.json()
+            })
+            .then(function (rep) {
+                console.log(rep)
+                localStorage.setTtem("contact", JSON.stringify(rep.contact));
+                localStorage.setItem("produits", JSON.stringify(rep.products));
+                window.location.assign("confirmation.html?orderId=" + rep.orderId);
+            })
+            .catch(function (_err) {
+                alert(' fetch erreur');
+            })
 
     }
 });
