@@ -190,7 +190,7 @@ form.addEventListener("submit", function (event) {
     }
 
     if (isValid) {
-
+        // Création d'un objet "contact" avec les données saisies
         const contact = {
             'firstName': firstName,
             'lastName': lastName,
@@ -198,17 +198,21 @@ form.addEventListener("submit", function (event) {
             'city': city,
             'email': email
         };
+
+        //Création d'un tableau vide "products"
         let products = [];
+
+        //Ajout des identifiants des produits du panier au tableau "products"
         panier.forEach((kanap) => {
             products.push(kanap._id)
         })
-
+        //Transformation de l'objet "FormCommande" en format JSON
         let FormCommande = JSON.stringify({
             contact,
             products,
-        })
+        });
 
-        // APEL API AVEC FETCH // ENVOIE DES DONNEES AVEC POST
+        // Appel de l'API avec Fetch et envoi des données avec la méthode POST
         fetch('http://localhost:3000/api/products/order', {
             method: 'POST',
             headers: {
@@ -222,8 +226,11 @@ form.addEventListener("submit", function (event) {
             })
             .then(function (rep) {
                 console.log(rep)
+                //Sauvegarde des données de contact et de commande dans le stockage local
                 localStorage.setTtem("contact", JSON.stringify(rep.contact));
                 localStorage.setItem("produits", JSON.stringify(rep.products));
+
+                // Redirection vers la page de confirmation
                 window.location.assign("confirmation.html?orderId=" + rep.orderId);
             })
             .catch(function (_err) {
