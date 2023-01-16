@@ -1,7 +1,7 @@
-
+//Fonction pour afficher l'ID de commande sur la page de confirmation
 function displayOrderId() {
-    // Génère un numéro de commande unique aléatoire
-    // const orderId = "CMD" + Math.floor(10000000000 + Math.random() * 900000000);
+
+    // Récupère l'ID de commande à partir de l'URL
     let url = new URL(location.href)
     const orderId = url.searchParams.get("orderId");
     // Récupère la balise span avec l'identifiant "orderId"
@@ -11,5 +11,13 @@ function displayOrderId() {
     orderIdEl.innerHTML = orderId;
 
 }
-
+// Appel de la fonction pour afficher l'ID de commande
 displayOrderId();
+
+
+
+
+
+
+// Génère un numéro de commande unique aléatoire
+    // const orderId = "CMD" + Math.floor(10000000000 + Math.random() * 900000000);

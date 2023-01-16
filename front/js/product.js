@@ -1,20 +1,19 @@
-
 let product = "";
-//associer la page aux données de l'api
+// variable pour stocker les informations du produit à partir de l'API
 let item = 0
 let str = window.location.href
 let url = new URL(str)
-const idProduct = url.searchParams.get("id"); //<- va chercher dans mon url la valeur du parametre id
+const idProduct = url.searchParams.get("id"); // Récupère la valeur de l'ID dans l'URL
 
 const colorsOption = document.getElementById('colors');
-
-fetch("http://localhost:3000/api/products/" + idProduct)// recuperation de l'api et stockage dans localStorage
-    .then((res) => res.json())//des promesses
-    .then((data) => {//toujours des promesses
-
+// Récupération des informations du produit à partir de l'API
+fetch("http://localhost:3000/api/products/" + idProduct)
+    //Récupère les informations de l'API pour le produit spécifié par l'ID
+    .then((res) => res.json())// Transforme la réponse en format JSON
+    .then((data) => {
         product = data;
-        // je recherche ce que je veux remplacer puis j'insere mon elemement de remplacement
-        //apres le debut de ma balise
+        // Insertion des informations du produit dans les éléments correspondants de la page
+
         document.querySelector('.item__img')
             .insertAdjacentHTML('afterbegin', `<img src="${product.imageUrl}" alt="${product.altTxt}"></img>`)
         document.getElementById('title')
@@ -24,7 +23,7 @@ fetch("http://localhost:3000/api/products/" + idProduct)// recuperation de l'api
         document.getElementById('description')
             .insertAdjacentHTML('afterbegin', `${product.description}`)
 
-        // boucle permettant dafficher le choix des couleurs
+        // Boucle pour ajouter les options de couleur dans la liste déroulante
         for (let _color of product.colors) {
             document.getElementById('colors')
                 .insertAdjacentHTML('beforeend', `<option value=${_color}>${_color}</option>`);
@@ -37,7 +36,7 @@ fetch("http://localhost:3000/api/products/" + idProduct)// recuperation de l'api
     })
 
 
-//fonction d'ajout au panier
+// Fonction pour ajouter le produit au panier
 const addToCart = () => {
     let quantity = parseInt(document.getElementById('quantity').value);
     let color = colorsOption.options[colorsOption.selectedIndex].value;
@@ -54,14 +53,14 @@ const addToCart = () => {
             "color": color,
         }
 
-        //recupere mon panier memorise
+        // Récupération du panier enregistré en local
         let panier = localStorage.getItem('panier') ? JSON.parse(localStorage.getItem('panier')) : [];
 
-        // boucle for qui parcours les ligne de mon panier
+        // Boucle pour parcourir les lignes du panier
         let existingProduct = false;
 
         for (let i = 0; i < panier.length; i++) {
-            //si le produit exitse deja 
+            // Si le produit existe déjà dans le panier
             if (panier[i]._id === newPurchase._id && panier[i].color === newPurchase.color) {
                 existingProduct = i;
             };
@@ -71,11 +70,12 @@ const addToCart = () => {
         } else {
             panier.push(newPurchase);
         }
-        // addLocalStorage(panier);
+        // Ajout des informations du panier en local
         localStorage.setItem('panier', JSON.stringify(panier));
+        // Redirection vers la page du panier
         location.replace("cart.html");
     }
 }
-
+// Ajout de l'événement click pour le bouton "Ajouter au panier"
 document.getElementById("addToCart").addEventListener("click", addToCart);
 

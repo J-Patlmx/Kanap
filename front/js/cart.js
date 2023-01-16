@@ -228,7 +228,7 @@ form.addEventListener("submit", function (event) {
                 console.log(rep)
                 //Sauvegarde des données de contact et de commande dans le stockage local
                 localStorage.setTtem("contact", JSON.stringify(rep.contact));
-                localStorage.setItem("produits", JSON.stringify(rep.products));
+                localStorage.setItem("produits", JSON.stringify(rep.product));
 
                 // Redirection vers la page de confirmation
                 window.location.assign("confirmation.html?orderId=" + rep.orderId);
