@@ -232,18 +232,18 @@ form.addEventListener("click", function (event) {
 
                 // Redirection vers la page de confirmation
                 window.location.assign("./confirmation.html?orderId=" + rep.orderId);
-                /*
-                                // Fonction pour vider le panier
-                                const clearCart = () => {
-                                    // Réinitialisation de la variable panier à un tableau vide
-                                    panier = [];
-                                    // Mise à jour du Local storage en enregistrant la nouvelle valeur de la variable panier
-                                    localStorage.setItem('panier', JSON.stringify(panier));
-                                    // Suppression des articles du panier dans la div cart__items
-                                    cart__items.innerHTML = "";
-                                }
-                                // Appel de la fonction pour vider le panier
-                                clearCart();*/
+
+                // Fonction pour vider le panier
+                const clearCart = () => {
+                    // Réinitialisation de la variable panier à un tableau vide
+                    panier = [];
+                    // Mise à jour du Local storage en enregistrant la nouvelle valeur de la variable panier
+                    localStorage.setItem('panier', JSON.stringify(panier));
+                    // Suppression des articles du panier dans la div cart__items
+                    cart__items.innerHTML = "";
+                }
+                // Appel de la fonction pour vider le panier
+                clearCart();
             })
             .catch(function (_err) {
                 alert(' fetch erreur');
