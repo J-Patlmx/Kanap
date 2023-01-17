@@ -62,7 +62,7 @@ const reloadPanier = () => {
             addIdPanier.push(Kanap._id)
 
             //ajout de l event supprimer sur les boutton
-            document.querySelectorAll(".deleteItem").forEach(deleteBtn => {
+            document.querySelectorAll(".deleteItem").forEach((deleteBtn, i) => {
                 deleteBtn.addEventListener("click", () => deleteKanap(i))
             });
 
@@ -124,8 +124,8 @@ function priceTotalPanier(price, quantity) {
 
 
 let form = document.querySelector(".cart__order__form");
-// Ecouteur d'événement "submit" pour le formulaire de commande
-form.addEventListener("submit", function (event) {
+// Ecouteur d'événement "click" pour le formulaire de commande
+form.addEventListener("click", function (event) {
 
     // Empêche la soumission automatique du formulaire
     event.preventDefault();
@@ -227,23 +227,23 @@ form.addEventListener("submit", function (event) {
             .then(function (rep) {
                 console.log(rep)
                 //Sauvegarde des données de contact et de commande dans le stockage local
-                // localStorage.setTtem("contact", JSON.stringify(rep.contact));
-                // localStorage.setItem("produits", JSON.stringify(rep.product));
+                localStorage.setItem("contact", JSON.stringify(rep.contact));
+                localStorage.setItem("produits", JSON.stringify(rep.products));
 
                 // Redirection vers la page de confirmation
                 window.location.assign("./confirmation.html?orderId=" + rep.orderId);
-
-                // Fonction pour vider le panier
-                const clearCart = () => {
-                    // Réinitialisation de la variable panier à un tableau vide
-                    panier = [];
-                    // Mise à jour du Local storage en enregistrant la nouvelle valeur de la variable panier
-                    localStorage.setItem('panier', JSON.stringify(panier));
-                    // Suppression des articles du panier dans la div cart__items
-                    cart__items.innerHTML = "";
-                }
-                // Appel de la fonction pour vider le panier
-                clearCart();
+                /*
+                                // Fonction pour vider le panier
+                                const clearCart = () => {
+                                    // Réinitialisation de la variable panier à un tableau vide
+                                    panier = [];
+                                    // Mise à jour du Local storage en enregistrant la nouvelle valeur de la variable panier
+                                    localStorage.setItem('panier', JSON.stringify(panier));
+                                    // Suppression des articles du panier dans la div cart__items
+                                    cart__items.innerHTML = "";
+                                }
+                                // Appel de la fonction pour vider le panier
+                                clearCart();*/
             })
             .catch(function (_err) {
                 alert(' fetch erreur');
