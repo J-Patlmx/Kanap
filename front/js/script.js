@@ -25,6 +25,10 @@ const start = () => {
                         </a>`)
             }
         })
+    // .catch(function (_err) {
+    //     alert('deso pas deso');
+    //     console.log('erreur back');
+    // })
 }
 
 addEventListener('load', start)

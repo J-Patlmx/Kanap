@@ -121,7 +121,15 @@ function priceTotalPanier(price, quantity) {
 
 }
 
-
+// Fonction pour vider le panier
+const clearCart = () => {
+    // Réinitialisation de la variable panier à un tableau vide
+    panier = [];
+    // Mise à jour du Local storage en enregistrant la nouvelle valeur de la variable panier
+    localStorage.setItem('panier', JSON.stringify(panier));
+    // Suppression des articles du panier dans la div cart__items
+    cart__items.innerHTML = "";
+}
 
 let form = document.querySelector(".cart__order__form");
 // Ecouteur d'événement "click" pour le formulaire de commande
@@ -230,20 +238,13 @@ form.addEventListener("click", function (event) {
                 localStorage.setItem("contact", JSON.stringify(rep.contact));
                 localStorage.setItem("produits", JSON.stringify(rep.products));
 
+                // Appel de la fonction pour vider le panier
+                clearCart();
+
                 // Redirection vers la page de confirmation
                 window.location.assign("./confirmation.html?orderId=" + rep.orderId);
 
-                // Fonction pour vider le panier
-                const clearCart = () => {
-                    // Réinitialisation de la variable panier à un tableau vide
-                    panier = [];
-                    // Mise à jour du Local storage en enregistrant la nouvelle valeur de la variable panier
-                    localStorage.setItem('panier', JSON.stringify(panier));
-                    // Suppression des articles du panier dans la div cart__items
-                    cart__items.innerHTML = "";
-                }
-                // Appel de la fonction pour vider le panier
-                clearCart();
+
             })
             .catch(function (_err) {
                 alert(' fetch erreur');
