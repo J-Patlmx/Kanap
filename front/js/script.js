@@ -16,7 +16,7 @@ const start = () => {
         .then((data) => {
             try {
                 //stockage des données dans le localStorage pour une utilisation ultérieure
-                localStorage.setItem("productData", JSON.stringify(data))
+                // localStorage.setItem("productData", JSON.stringify(data))
                 //récupération de l'élément où les produits seront affichés
                 const galery = document.getElementById('items')
                 //boucle pour parcourir les produits récupérés
