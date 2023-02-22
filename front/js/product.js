@@ -8,11 +8,12 @@ const idProduct = url.searchParams.get("id"); // Récupère la valeur de l'ID da
 const colorsOption = document.getElementById('colors');
 // Récupération des informations du produit à partir de l'API
 fetch("http://localhost:3000/api/products/" + idProduct)
-    //Récupère les informations de l'API pour le produit spécifié par l'ID
+    //Récupère les informations de l'API pour le produit spécifié par l'ID (recupère dans l'url )
     .then((res) => {//des promesses
         try {
             return res.json();
         }
+        // Si une erreur se produit lors de l'exécution de la fonction, la clause catch est déclenchée et affiche un message d'erreur dans la console, indiquant le numéro de l'erreur et sa description.
         catch (error) { console.log('erreur product 01', error); }
     })// Transforme la réponse en format JSON
     .then((data) => {
@@ -75,10 +76,10 @@ const addToCart = () => {
                 if (panier[i]._id === newPurchase._id && panier[i].color === newPurchase.color) {
                     existingProduct = i;
                 };
-            }
+            }// si existingProduct existe alors on lui ajoute la nouvelle quantitèe
             if (existingProduct !== false) {
                 panier[existingProduct].quantity = parseInt(panier[existingProduct].quantity) + newPurchase.quantity;
-            } else {
+            } else {// sinon on lajoute dans un nouvelle achat
                 panier.push(newPurchase);
             }
             // Ajout des informations du panier en local
@@ -87,6 +88,7 @@ const addToCart = () => {
             location.replace("cart.html");
         }
     } catch (error) {
+        // Si une erreur se produit lors de l'exécution de la fonction, la clause catch est déclenchée et affiche un message d'erreur dans la console, indiquant le numéro de l'erreur et sa description.
         console.log('erreur product 3', error);
     }
 }

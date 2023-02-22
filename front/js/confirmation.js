@@ -10,6 +10,7 @@ function displayOrderId() {
         // Affiche le numéro de commande dans la balise span
         orderIdEl.innerHTML = orderId;
     } catch (error) {
+        // Si une erreur se produit lors de l'exécution de la fonction, la clause catch est déclenchée et affiche un message d'erreur dans la console, indiquant le numéro de l'erreur et sa description.
         console.log('Erreur Confirmation 01');
     }
 }

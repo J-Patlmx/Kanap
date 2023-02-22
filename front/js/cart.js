@@ -2,7 +2,7 @@
 // s'il n'existe pas de panier dans le local storage on initialise un tableau vide
 let panier = localStorage.getItem('panier') ? JSON.parse(localStorage.getItem('panier')) : [];
 
-// récupération de la div dans laquelle on va ajouter les articles du panier
+// récupération de la div par son id dans laquelle on va ajouter les articles du panier
 let cart__items = document.getElementById("cart__items");
 
 let panierTotalPrice = 0;// initialisation du total panier a 0
@@ -21,6 +21,7 @@ function GetProduct(Currentid) {
                 })
         );
     } catch (error) {
+        // Si une erreur se produit lors de l'exécution de la fonction, la clause catch est déclenchée et affiche un message d'erreur dans la console, indiquant le numéro de l'erreur et sa description.
         console.log('Erreur cart 01:', error);
     }
 }
@@ -64,18 +65,19 @@ const reloadPanier = () => {
                 //ajout de l'id produit 
                 addIdPanier.push(Kanap._id)
 
-                //ajout de l event supprimer sur les boutton
+                //ajout de l'event supprimer sur les boutton
                 document.querySelectorAll(".deleteItem").forEach((deleteBtn, i) => {
                     deleteBtn.addEventListener("click", () => deleteKanap(i))
                 });
 
-                //ajout de l event d'update de la quantitées
+                //ajout de l'event d'update de la quantitées
                 document.querySelectorAll(".itemQuantity").forEach(modifiedBtn =>
                     modifiedBtn.addEventListener('change', () => updateKanap(i, modifiedBtn.value)))
             })
         })
     }
     catch (error) {
+        // Si une erreur se produit lors de l'exécution de la fonction, la clause catch est déclenchée et affiche un message d'erreur dans la console, indiquant le numéro de l'erreur et sa description.
         console.log("Erreur cart 02:", error);
     }
 }
@@ -84,17 +86,19 @@ reloadPanier();
 
 //FONCTION SUPPRIMER
 function deleteKanap(p) {
-    try {
+    try {// si le user est sûre de del sont Kanap alors je vais chercher la position de celu si dans le panier  
         if (confirm("Êtes-vous sur de vouloirs supprimés cet article ? C'est définitif !")) {
             panier.forEach((_kanap, i) => {
-                if (i === p) {
-                    panier.splice(i, 1);
-                    localStorage.setItem('panier', JSON.stringify(panier));
+                if (i === p) {//Si l'indice i === à la position p l'article Kanap le user souhaite supprimer,
+                    panier.splice(i, 1);//la fonction deleteKanap utilise la méthode splice() pour supprimer l'article Kanap à l'indice i du panier.
+                    localStorage.setItem('panier', JSON.stringify(panier));//utilisation de setItem() pour mettre à jour le panier  dans le stockage local avec la nouvelle version du panier.
+                    // Enfin, la fonction recharge la page à l'aide de la méthode reload() de l'objet location pour afficher la nouvelle version du panier mise à jour dans la page.
                     location.reload();
                 }
             })
         }
     } catch (error) {
+        // Si une erreur se produit lors de l'exécution de la fonction, la clause catch est déclenchée et affiche un message d'erreur dans la console, indiquant le numéro de l'erreur et sa description.
         console.log("Erreur cart 03 :" + error);
     }
 }
@@ -106,15 +110,16 @@ function updateKanap(p, value) {
             alert("Veuillez sélectionner une quantité entre 1 et 100 s'il vous plaît.");
         }
         panier.forEach((kanap, i) => {
-            if (i === p) {
-                kanap.quantity = value;
-                localStorage.setItem('panier', JSON.stringify(panier));
+            if (i === p) {//Si l'indice i === position p de l'article Kanap que le user veux mettre à jour, 
+                kanap.quantity = value;//la fonction met à jour la propriété "quantity" de l'article Kanap avec la nouvelle quantité passée en argument.
+                localStorage.setItem('panier', JSON.stringify(panier));//utilisation de setItem() pour mettre à jour le panier  dans le stockage local avec la nouvelle version du panier.
 
                 reloadPanier();//<-- remplace le location.reload() 
                 // location.reload(); //<- me permet de mettre a jour mon panier dans le local storage
             }
         })
     } catch (error) {
+        // Si une erreur se produit lors de l'exécution de la fonction, la clause catch est déclenchée et affiche un message d'erreur dans la console, indiquant le numéro de l'erreur et sa description.
         console.log("erreur cart 04:", error);
     }
 }
@@ -129,9 +134,10 @@ function priceTotalPanier(price, quantity) {
         let totalQuantity = document.getElementById('totalQuantity').textContent = panierTotalQuantity;
 
         // envoie au local storage
-        localStorage.setItem('totalPrice', JSON.stringify(totalPrice));
+        // localStorage.setItem('totalPrice', JSON.stringify(totalPrice));
         localStorage.setItem('totalQuantity', JSON.stringify(totalQuantity));
     } catch (error) {
+        // Si une erreur se produit lors de l'exécution de la fonction, la clause catch est déclenchée et affiche un message d'erreur dans la console, indiquant le numéro de l'erreur et sa description.
         console.log("Erreur Cart 05:", error);
     }
 
@@ -140,13 +146,14 @@ function priceTotalPanier(price, quantity) {
 // Fonction pour vider le panier
 const clearCart = () => {
     try {
-        // Réinitialisation de la variable panier à un tableau vide
+        //Réinitialisation de la variable panier à un tableau vide
         panier = [];
-        // Mise à jour du Local storage en enregistrant la nouvelle valeur de la variable panier
+        //Mise à jour du Local storage en enregistrant la nouvelle valeur de la variable panier
         localStorage.setItem('panier', JSON.stringify(panier));
         // Suppression des articles du panier dans la div cart__items
         cart__items.innerHTML = "";
     } catch (error) {
+        // Si une erreur se produit lors de l'exécution de la fonction, la clause catch est déclenchée et affiche un message d'erreur dans la console, indiquant le numéro de l'erreur et sa description.
         console.log("Erreur Cart 06:", error);
     }
 }
@@ -255,11 +262,11 @@ form.addEventListener("click", function (event) {
                 .then(function (rep) {
                     console.log(rep)
                     //Sauvegarde des données de contact et de commande dans le stockage local
-                    localStorage.setItem("contact", JSON.stringify(rep.contact));
+                    // localStorage.setItem("contact", JSON.stringify(rep.contact));
                     localStorage.setItem("produits", JSON.stringify(rep.products));
 
                     // Appel de la fonction pour vider le panier
-                    clearCart();
+                    // clearCart();
 
                     // Redirection vers la page de confirmation
                     window.location.assign("./confirmation.html?orderId=" + rep.orderId);
@@ -273,6 +280,7 @@ form.addEventListener("click", function (event) {
 
         }
     } catch (error) {
+        // Si une erreur se produit lors de l'exécution de la fonction, la clause catch est déclenchée et affiche un message d'erreur dans la console, indiquant le numéro de l'erreur et sa description.
         console.log("Erreur Cart 07:", error);
     }
 });

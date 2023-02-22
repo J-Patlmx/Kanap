@@ -8,6 +8,8 @@ const start = () => {
             try {
                 return res.json();
             }
+            // Si une erreur se produit lors de l'exécution de la fonction, 
+            //la clause catch est déclenchée et affiche un message d'erreur dans la console, indiquant le numéro de l'erreur et sa description.
             catch { console.log('erreur script 01'); }
         })
         //autre promesse pour utiliser les données récupérées
@@ -32,6 +34,7 @@ const start = () => {
                 }
             }
             catch {
+                // Si une erreur se produit lors de l'exécution de la fonction, la clause catch est déclenchée et affiche un message d'erreur dans la console, indiquant le numéro de l'erreur et sa description.
                 console.log('erreur script 02');
             }
 
