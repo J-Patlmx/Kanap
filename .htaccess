@@ -1,0 +1,5 @@
+RewriteEngine On
+RewriteBase /
+
+# Rediriger toutes les requêtes vers le dossier Kanap/front/html/
+RewriteRule ^(.*)$ Kanap/front/html/$1 [L]
